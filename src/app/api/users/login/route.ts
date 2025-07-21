@@ -10,10 +10,10 @@ export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
 
-    const { email, password } = reqBody;
+    const { email, password, otp } = reqBody;
     console.log(reqBody);
 
-    if (!email || !password) {
+    if (!email || !password || !otp) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -25,12 +25,31 @@ export async function POST(request: NextRequest) {
         { error: "user do not exists" },
         { status: 404 }
       );
+    console.log("user found");
+
+    if (!user.verifyOtp) {
+      return NextResponse.json(
+        { error: "OTP not found or already used. Please request a new one." },
+        { status: 400 }
+      );
+    }
+    console.log("verifyOtp does not exits");
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return NextResponse.json({ error: "password invalid" }, { status: 404 });
     }
+    const isValidOtp = await bcrypt.compare(otp, user.verifyOtp);
+    if (!isValidOtp) {
+      return NextResponse.json({ error: "OTP invalid" }, { status: 401 });
+    }
+    console.log("Otp and pass verification done");
 
+    user.verifyOtp = undefined;
+    user.verifyOtpExpiry = undefined;
+    user.isVerified = true;
+    await user.save();
+    console.log("Otp deleted done");
     //create token data
     const tokenData = {
       id: user.id,

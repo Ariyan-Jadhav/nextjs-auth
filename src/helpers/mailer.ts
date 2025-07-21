@@ -4,38 +4,37 @@ import bcrypt from "bcryptjs";
 
 export const sendMail = async ({ email, emailType, userId }: any) => {
   try {
-    const hashedToken = await bcrypt.hash(userId.toString(), 10);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedOtp = await bcrypt.hash(otp, 10);
+
+    console.log(otp, hashedOtp);
+
     if (emailType === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
-        verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 3600000,
+        verifyOtp: hashedOtp || "",
+        verifyOtpExpiry: Date.now() + 3600000,
       });
     } else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
-        forgotPasswordToken: hashedToken,
+        forgotPasswordToken: hashedOtp,
         forgotPasswordTokenExpiry: Date.now() + 3600000,
       });
     }
 
     // Looking to send emails in production? Check out our Email API/SMTP product!
-    var transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+    const transport = nodemailer.createTransport({
+      service: "gmail",
       auth: {
-        user: "2b3cc8c18a4b99",
-        pass: "794519940b32c8",
+        user: "ariyanthegreatest@gmail.com",
+        pass: "baeq vmdk pnhs tyoz", // not your actual Gmail password!
       },
     });
     const mailOptions = {
-      from: "pplcallmeomj@gmail.com",
+      from: "ariyanthegreatest@gmail.com",
       to: email,
       subject:
         emailType === "VERIFY" ? "Verify your email" : "Reset your Email",
-      html: `<p>Click <a href="${
-        process.env.DOMAIN
-      }/verifyemail?token=${hashedToken}">here</a> to ${
-        emailType === "VERIFY" ? "Verify your email" : "Reset your Email"
-      }</p>`,
+      html: `<p>Your OTP is <b>${otp}</b>. It will expire in 10 minutes.</p>`,
     };
     const mailResponse = await transport.sendMail(mailOptions);
     console.log("Mail sent successfully ✅");
@@ -45,3 +44,9 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
     throw new Error(error.message);
   }
 };
+
+// `<p>Click <a href="${
+//         process.env.DOMAIN
+//       }/verifyemail?token=${otp}">here</a> to ${
+//         emailType === "VERIFY" ? "Verify your email" : "Reset your Email"
+//       }</p>`,

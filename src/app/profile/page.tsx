@@ -42,6 +42,9 @@ export default function ProfilePage() {
       <button onClick={logout} className="bg-black text-amber-50 px-2 py-1">
         Logout
       </button>
+      <Link href={"/changepass"}>
+        <button>Change Password</button>
+      </Link>
       <button
         onClick={getUserDetails}
         className="bg-black text-amber-50 px-2 py-1"
