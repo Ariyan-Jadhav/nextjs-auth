@@ -2,6 +2,7 @@ import { connect } from "@/dbConfig/dbConfig";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { sendMail } from "@/helpers/mailer";
 
 connect();
 
@@ -25,10 +26,13 @@ export async function POST(request: NextRequest) {
         { error: "User already exists" },
         { status: 400 }
       );
+    console.log(Extuser);
 
     //hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+
+    console.log(hashedPassword);
 
     //create new user
     const user = new User({
@@ -41,6 +45,10 @@ export async function POST(request: NextRequest) {
     const savedUser = await user.save();
     console.log(savedUser);
 
+    //send Verification email
+
+    await sendMail({ email, emailType: "VERIFY", userId: savedUser._id });
+    console.log("EMAIL SENT");
     return NextResponse.json({
       message: "User created successfully",
       success: true,
