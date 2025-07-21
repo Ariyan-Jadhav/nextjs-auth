@@ -23,20 +23,27 @@ function page() {
   };
 
   return (
-    <div>
+    <div className="h-screen flex flex-col items-center justify-center bg-[#113F67]">
       <input
+        className="bg-[#FAF7F3] px-2 py-2 mb-2 rounded-2xl font-bold"
         type="text"
         placeholder="current password"
         value={oldPass}
         onChange={(e) => setOldPass(e.target.value)}
       />
       <input
+        className="bg-[#FAF7F3] px-2 py-2 mb-2 rounded-2xl font-bold"
         type="text"
         placeholder="new password"
         value={newPass}
         onChange={(e) => setNewPass(e.target.value)}
       />
-      <button onClick={changePass}>Change Password</button>
+      <button
+        className="bg-[rgb(217,162,153)]  hover:bg-[rgb(217,162,153,0.7)] focus:bg-[rgb(217,162,153,0.7)] p-2 rounded-2xl mt-3"
+        onClick={changePass}
+      >
+        Change Password
+      </button>
     </div>
   );
 }

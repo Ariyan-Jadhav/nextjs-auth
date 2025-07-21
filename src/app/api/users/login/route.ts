@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
 
     const { email, password, otp } = reqBody;
-    console.log(reqBody);
 
     if (!email || !password || !otp) {
       return NextResponse.json(
@@ -25,7 +24,6 @@ export async function POST(request: NextRequest) {
         { error: "user do not exists" },
         { status: 404 }
       );
-    console.log("user found");
 
     if (!user.verifyOtp) {
       return NextResponse.json(
@@ -49,7 +47,6 @@ export async function POST(request: NextRequest) {
     user.verifyOtpExpiry = undefined;
     user.isVerified = true;
     await user.save();
-    console.log("Otp deleted done");
     //create token data
     const tokenData = {
       id: user.id,
