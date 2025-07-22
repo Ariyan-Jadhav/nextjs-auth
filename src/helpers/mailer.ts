@@ -26,7 +26,7 @@ export const sendMail = async ({ email, emailType, userId }: any) => {
       service: "gmail",
       auth: {
         user: "ariyanthegreatest@gmail.com",
-        pass: "baeq vmdk pnhs tyoz", // not your actual Gmail password!
+        pass: process.env.TRANSPOST_PASS, // not your actual Gmail password!
       },
     });
     const mailOptions = {
