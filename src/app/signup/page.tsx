@@ -66,7 +66,7 @@ export default function SignupPage() {
           />
           <input
             className="bg-[rgb(0,0,0,0.2)] p-2 font-bold rounded-2xl outline-none"
-            type="text"
+            type="email"
             placeholder="email"
             id="email"
             value={user.email}
@@ -74,7 +74,7 @@ export default function SignupPage() {
           />
           <input
             className="bg-[rgb(0,0,0,0.2)]  p-2 font-bold rounded-2xl outline-none"
-            type="text"
+            type="password"
             placeholder="password"
             id="password"
             value={user.password}

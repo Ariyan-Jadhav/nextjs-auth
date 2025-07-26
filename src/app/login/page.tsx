@@ -80,7 +80,7 @@ export default function LoginPage() {
         <div className="flex flex-col gap-4">
           <input
             className="bg-[rgb(0,0,0,0.2)] p-2 font-bold rounded-2xl outline-none mt-2"
-            type="text"
+            type="email"
             placeholder="email"
             id="email"
             value={user.email}
@@ -88,7 +88,7 @@ export default function LoginPage() {
           />
           <input
             className="bg-[rgb(0,0,0,0.2)] p-2 font-bold rounded-2xl outline-none"
-            type="text"
+            type="password"
             placeholder="password"
             id="password"
             value={user.password}
@@ -97,7 +97,7 @@ export default function LoginPage() {
           <div className="flex w-full">
             <input
               className="bg-[rgb(0,0,0,0.2)] p-2 font-bold rounded-l-2xl outline-none w-[160px]"
-              type="text"
+              type="password"
               placeholder="otp"
               id="otp"
               value={user.otp}
